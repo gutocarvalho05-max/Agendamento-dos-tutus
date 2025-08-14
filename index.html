@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grade 7x12</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #0f172a;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 36px;
+      margin: 0;
+      padding: 10px 0;
+      font-family: 'Pacifico', cursive;
+      background: linear-gradient(90deg, #3b82f6, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      z-index: 1;
+      position: relative;
+    }
+    .container { display: flex; gap: 20px; position: relative; z-index: 1; }
+    .user-info { position: absolute; left: -180px; top: 50%; transform: translateY(-50%); text-align: center; z-index: 1; }
+    .user-name { font-size: 32px; font-family: 'Pacifico', cursive; font-weight: bold; color: gold; }
+    .user-image { margin-top: 10px; width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid gold; }
+    .user-sigla-level { font-size: 20px; font-family: 'Pacifico', cursive; color: #facc15; margin-top: 8px; }
+    .board { display: grid; grid-template-columns: 150px repeat(11, 50px); grid-template-rows: repeat(11, 50px); gap: 4px; z-index: 1; }
+    .cell { width: 100%; height: 50px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; cursor: pointer; user-select: none; text-align: center; padding: 2px; box-sizing: border-box; border-radius: 6px; }
+    .cell.x { color: #facc15; font-size: 26px; }
+    .cell.star { color: red; }
+    .cell.gold { background-color: gold !important; color: black; }
+    .name-cell { background: rgba(255, 255, 255, 0.1); cursor: default; font-weight: bold; color: #cbd5e1; display: flex; align-items: center; justify-content: center; border-radius: 6px; }
+    .counters { display: flex; flex-direction: column; gap: 15px; }
+    .counter-box { background: rgba(255, 255, 255, 0.1); padding: 15px 20px; border-radius: 12px; text-align: center; font-size: 16px; font-weight: bold; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 100px; color: #cbd5e1; }
+    .counter-number { font-size: 28px; color: #facc15; margin-top: 5px; }
+    footer { font-size: 14px; color: #cbd5e1; background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 6px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; z-index: 1; position: relative; }
+    .reset-button { background-color: #0c4a6e; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    .reset-button:hover { background-color: #1e40af; }
+    .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 999; }
+    .popup { background: #1e293b; padding: 30px; border-radius: 12px; text-align: center; color: #fff; display: flex; flex-direction: column; gap: 15px; }
+    .popup input[type=text] { padding: 5px; border-radius: 4px; border: none; font-size: 16px; }
+    .popup label { display: flex; gap: 10px; align-items: center; justify-content: center; font-size: 16px; }
+    .popup button { padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    .popup button:hover { background: #2563eb; }
+    .meta-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: gold; color: black; padding: 40px 60px; font-size: 36px; font-family: 'Pacifico', cursive; border-radius: 20px; z-index: 1000; display: none; text-align: center; box-shadow: 0 0 20px #facc15; }
+    .meta-subtext { font-size: 24px; margin-top: 10px; display: block; }
+    .copyright { font-size: 12px; color: #cbd5e1; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Agendamento dos Tutus</h1>
+  <div class="container">
+    <div class="user-info">
+      <div class="user-name" id="userNameDisplay"></div>
+      <img id="userImage" class="user-image" src="https://picsum.photos/100" alt="Usuário">
+      <div class="user-sigla-level" id="userSiglaLevelDisplay">SDR</div>
+    </div>
+    <div class="board" id="board"></div>
+    <div class="counters">
+      <div class="counter-box">Agendamentos<span class="counter-number" id="countAgendamento">0</span></div>
+      <div class="counter-box">No Shows<span class="counter-number" id="countNoShow">0</span></div>
+      <div class="counter-box">Vendas<span class="counter-number" id="countVenda">0</span></div>
+    </div>
+  </div>
+  <footer>
+    <button class="reset-button" id="resetMonth">REINICIAR MÊS</button>
+    <div>Legenda: <span style="color:#facc15">★ = Agendamento</span> | <span style="color:red">X = No-Show</span> | <span style="color:black;background:gold;padding:0 4px">Dourado = Venda</span></div>
+    <div class="copyright">Feito por Augusto de Carvalho, SDR Outbound</div>
+  </footer>
+
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup">
+      <div>Digite seu nome:</div>
+      <input type="text" id="popupName" placeholder="Nome" />
+      <label><input type="radio" name="level" value="Junior" checked /> Junior</label>
+      <label><input type="radio" name="level" value="Pleno" /> Pleno</label>
+      <button id="popupSubmit">Confirmar</button>
+    </div>
+  </div>
+
+  <div class="meta-popup" id="metaPopup">META BATIDAAA<span class="meta-subtext">VAI BATER O SINOO</span></div>
+
+  <script>
+    const board = document.getElementById('board');
+    const userNameDisplay = document.getElementById('userNameDisplay');
+    const userSiglaLevelDisplay = document.getElementById('userSiglaLevelDisplay');
+    const metaPopup = document.getElementById('metaPopup');
+    const rows = 11;
+    const cols = 12;
+    const names = ["Amanda", "Andri", "Bruno", "Érica", "Rocha", "Jana", "Chico", "Jhow", "Léo", "Malu", "Matheus"];
+
+    let savedState = JSON.parse(localStorage.getItem('gridState')) || Array(rows).fill(null).map(()=>Array(cols).fill(''));
+    let userName = localStorage.getItem('userName');
+    let userLevel = localStorage.getItem('userLevel');
+    let metaShown = localStorage.getItem('metaShown') === 'true';
+
+    const popupOverlay = document.getElementById('popupOverlay');
+    const popupSubmit = document.getElementById('popupSubmit');
+    if(!userName || !userLevel){
+      popupOverlay.style.display = 'flex';
+    } else {
+      userNameDisplay.textContent = userName;
+      userSiglaLevelDisplay.textContent = `SDR - ${userLevel}`;
+    }
+
+    popupSubmit.addEventListener('click', () => {
+      const nameInput = document.getElementById('popupName').value.trim();
+      const levelInput = document.querySelector('input[name="level"]:checked').value;
+      if(nameInput){
+        userName = nameInput;
+        userLevel = levelInput;
+        localStorage.setItem('userName', userName);
+        localStorage.setItem('userLevel', userLevel);
+        userNameDisplay.textContent = userName;
+        userSiglaLevelDisplay.textContent = `SDR - ${userLevel}`;
+        popupOverlay.style.display = 'none';
+      } else {
+        alert('Por favor, digite seu nome.');
+      }
+    });
+
+    function saveState() {
+      localStorage.setItem('gridState', JSON.stringify(savedState));
+      updateCounters();
+    }
+
+    function showMetaPopup(){
+      metaPopup.style.display = 'block';
+      setTimeout(()=>{ metaPopup.style.display = 'none'; }, 3000);
+    }
+
+    function updateCellAppearance(cell, value) {
+      cell.classList.remove('x', 'star', 'gold');
+      cell.style.backgroundColor = 'rgba(255,255,255,0.05)';
+      if (value === '★') { cell.textContent = '★'; cell.classList.add('x'); }
+      else if (value === 'X') { cell.textContent = 'X'; cell.classList.add('star'); }
+      else if (value === 'GOLD') { cell.textContent = ''; cell.classList.add('gold'); }
+      else { cell.textContent = ''; }
+    }
+
+    function updateCounters() {
+      let countAgendamento = 0, countNoShow = 0, countVenda = 0;
+      for (let r = 0; r < rows; r++){
+        for (let c = 1; c < cols; c++){
+          if(savedState[r][c] !== '') countAgendamento++;
+          if(savedState[r][c] === 'X') countNoShow++;
+          if(savedState[r][c] === 'GOLD') countVenda++;
+        }
+      }
+      document.getElementById('countAgendamento').textContent = countAgendamento;
+      document.getElementById('countNoShow').textContent = countNoShow;
+      document.getElementById('countVenda').textContent = countVenda;
+
+      const requiredSales = userLevel === 'Pleno' ? 8 : 6;
+      if(countVenda === requiredSales && !metaShown){
+        showMetaPopup();
+        metaShown = true;
+        localStorage.setItem('metaShown', 'true');
+      }
+    }
+
+    function resetMonth() {
+      savedState = Array(rows).fill(null).map(()=>Array(cols).fill(''));
+      metaShown = false;
+      localStorage.setItem('metaShown', 'false');
+      const cells = document.querySelectorAll('.cell');
+      cells.forEach((cell, index) => {
+        const r = Math.floor(index / cols);
+        const c = index % cols;
+        if(c>0) updateCellAppearance(cell, '');
+      });
+      saveState();
+    }
+
+    document.getElementById('resetMonth').addEventListener('click', resetMonth);
+
+    for (let r = 0; r < rows; r++){
+      for (let c = 0; c < cols; c++){
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        if(c === 0){
+          cell.textContent = names[r] || '';
+          cell.classList.add('name-cell');
+        } else {
+          updateCellAppearance(cell, savedState[r][c]);
+          cell.addEventListener('click', () => {
+            if(savedState[r][c]==='') savedState[r][c]='★';
+            else if(savedState[r][c]==='★') savedState[r][c]='X';
+            else if(savedState[r][c]==='X') savedState[r][c]='GOLD';
+            else savedState[r][c]='';
+            updateCellAppearance(cell, savedState[r][c]);
+            saveState();
+          });
+        }
+        board.appendChild(cell);
+      }
+    }
+
+    updateCounters();
+  </script>
+</body>
+</html>
