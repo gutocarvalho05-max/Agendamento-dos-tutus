@@ -75,9 +75,8 @@
     </div>
   </div>
   <footer>
-    <button class="reset-button" id="resetMonth">REINICIAR MÊS</button>
-    <div>Legenda: <span style="color:#facc15">★ = Agendamento</span> | <span style="color:red">X = No-Show</span> | <span style="color:black;background:gold;padding:0 4px">Dourado = Venda</span></div>
-    <div class="copyright">Feito por Augusto de Carvalho, SDR Outbound</div>
+    <div><button class="reset-button" id="resetMonth">REINICIAR MÊS</button> Legenda: <span style="color:#facc15">★ = Agendamento</span> | <span style="color:red">X = No-Show</span> | <span style="color:black;background:gold;padding:0 4px">Dourado = Venda</span></div>
+    <div class="copyright">Feito por <a href="wwww.Instagram.com/gutocarv">Augusto de Carvalho</a>, SDR Outbound</div>
   </footer>
 
   <div class="popup-overlay" id="popupOverlay">
@@ -108,6 +107,8 @@
 
     const popupOverlay = document.getElementById('popupOverlay');
     const popupSubmit = document.getElementById('popupSubmit');
+
+    // Mostrar pop-up apenas se usuário ainda não estiver definido
     if(!userName || !userLevel){
       popupOverlay.style.display = 'flex';
     } else {
@@ -212,3 +213,4 @@
   </script>
 </body>
 </html>
+
