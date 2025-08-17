@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Agendamento do TUTUS</title>
+  <title>Agendamento dos Tutus</title>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-  <link rel="icon" href="path/to/your/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/Shark.ico" type="image/x-icon">
   <style>
     body {
       margin: 0;
@@ -32,6 +32,9 @@
       z-index: 1;
       position: relative;
     }
+    h2{
+      color: black;
+    }
     .container { display: flex; gap: 20px; position: relative; z-index: 1; }
     .user-info { position: absolute; left: -180px; top: 50%; transform: translateY(-50%); text-align: center; z-index: 1; }
     .user-name { font-size: 32px; font-weight: bold; color: gold; }
@@ -42,7 +45,7 @@
     .cell.x { color: #facc15; font-size: 26px; }
     .cell.star { color: red; }
     .cell.gold { background-color: gold !important; color: black; }
-    .cell.hashtag{ background-color: rgb(125, 102, 0) !important; color: black; }
+    .cell.hashtag{color: rgb(0, 184, 251); }
     .name-cell { background: rgba(255, 255, 255, 0.1); cursor: default; font-weight: bold; color: #cbd5e1; display: flex; align-items: center; justify-content: center; border-radius: 6px; }
     .counters { display: flex; flex-direction: column; gap: 15px; }
     .counter-box { background: rgba(255, 255, 255, 0.1); padding: 15px 20px; border-radius: 12px; text-align: center; font-size: 16px; font-weight: bold; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 100px; color: #cbd5e1; }
@@ -65,6 +68,81 @@
       text-decoration: none;
       color: gold;
     }
+
+  /* Fundo do pop-up */
+  .popup {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Garante que fique acima de tudo */
+  }
+
+  .popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    width: 300px;
+    position: relative;
+    z-index: 10000;
+  }
+
+  .close {
+    position: absolute;
+    top: 10px; right: 15px;
+    font-size: 22px;
+    cursor: pointer;
+  }
+
+  .button-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .button-grid button {
+    padding: 10px;
+    border: none;
+    background: #0077cc;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .button-grid button:hover {
+    background: #005fa3;
+  }
+  #closePopup{
+    color: red;
+  }
+  #openPopup{
+    padding: 10px;
+    border: none;
+    background: #0077cc;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+  }
+  #venda{
+    border: none;
+    background: #827a00;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  #noshows{
+    border: none;
+    background: #820000;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+  }
   </style>
 </head>
 <body>
@@ -78,11 +156,32 @@
     <div class="board" id="board"></div>
     <div class="counters">
       <div class="counter-box">Agendamentos<span class="counter-number" id="countAgendamento">0</span></div>
-      <div class="counter-box">No Shows<span class="counter-number" id="countNoShow">0</span></div>
+      <div class="counter-box">No Shows<span class="counter-number" id="countNoShow">0</span>
+      <button id="noshows" onclick="noshows()"> + No-Shows</button>
+    </div>
       <div class="counter-box">Feedbacks<span class="counter-number" id="countFeedbacks">0</span></div>
-      <div class="counter-box">Vendas<span class="counter-number" id="countVenda">0</span></div>
+      <div class="counter-box">Vendas<span class="counter-number" id="countVenda">0</span>
+      <button id="venda" onclick="vendas()"> + Venda</button></div>
+      <button id="openPopup">Utilidades pros SDRs</button>
     </div>
   </div>
+<!-- Estrutura do pop-up -->
+<div id="popup" class="popup">
+  <div class="popup-content">
+    <span id="closePopup" class="close">&times;</span>
+    <h2>Utilidades!</h2>
+    <div class="button-grid">
+      <button onclick="window.open('https://docs.google.com/spreadsheets/d/1n-9xxPI8seMZ6Fe-KLNcq88-2yiMMZgPDfixczqWxNM/edit?gid=0#gid=0')">Tabela de Migrações</button>
+      <button onclick="window.open('https://docs.google.com/spreadsheets/d/1FdxbJKm7AApcOwMgE6cWpRUc2VDlUl9k5LlXCn5SByI/edit?gid=946629675#gid=946629675')">Tabela de Prova Social</button>
+      <button onclick="window.open('https://app.nextfit.com.br/')">Nosso Sistema</button>
+      <button onclick="window.open('https://venda.nextfit.com.br/4b3c3676-2b07-4ed3-b756-f45f8863950b/produtos')">Site de Produtos</button>
+      <button onclick="window.open('https://venda.nextfit.com.br/5cf5fbbd-e7aa-4e04-b3da-4aa81c186c1d/reservas')">Site de Agendamento de Quadras</button>
+      <button onclick="window.open('https://agendamento.nextfit.com.br/1bf9e4a8-3f19-404c-84cc-6123fb3c7c0d')">Site de Agendamento</button>
+      <button onclick="window.open('https://nextfit.getoutline.com/')">Outline</button>
+      <button onclick="window.open('https://app.powerbi.com/groups/me/apps/5cf9aed4-0e8a-4788-b131-304038778e38/reports/06a63da5-b7df-4d16-a2ba-e4ef6d7903e5/ReportSectionf17d1c8b2842c3f082a4?ctid=1a2fa684-1c81-423d-befd-74a51bfeeb3f&experience=power-bi')">PowerBI</button>
+    </div>
+  </div>
+</div>
  <footer>
     <button class="reset-button" id="resetMonth">REINICIAR MÊS</button>
     <div>Legenda: <span style="color:#facc15">★ = Agendamento</span> | <span style="color:red">X = No-Show</span> | <span style="color:black;background:gold;padding:0 4px">Dourado = Venda</span></div>
@@ -103,6 +202,9 @@
   <div class="supermeta-popup" id="supermetaPopup">SUPER META BATIDAAAÇAAA<span class="supermeta-subtext">VAI ESPANCAR O SINOOO!!</span></div>
 
  <script>
+    const openPopup = document.getElementById("openPopup");
+    const popup = document.getElementById("popup");
+    const closePopup = document.getElementById("closePopup");
     const board = document.getElementById('board');
     const userNameDisplay = document.getElementById('userNameDisplay');
     const userSiglaLevelDisplay = document.getElementById('userSiglaLevelDisplay');
@@ -112,6 +214,12 @@
     const cols = 12;
     const names = ["Amanda", "Andri", "Bruno", "Érica", "Rocha", "Jana", "Chico", "Jhow", "Léo", "Malu", "Matheus"];
 
+    let countNoshows = localStorage.getItem("countNoshows") 
+                 ? parseInt(localStorage.getItem("countNoshows")) 
+                 : 0;
+    let countVendaOutroMes = localStorage.getItem("countVendaOutroMes") 
+                 ? parseInt(localStorage.getItem("countVendaOutroMes")) 
+                 : 0;
     let savedState = JSON.parse(localStorage.getItem('gridState')) || Array(rows).fill(null).map(()=>Array(cols).fill(''));
     let userName = localStorage.getItem('userName');
     let userLevel = localStorage.getItem('userLevel');
@@ -121,6 +229,25 @@
 
     const popupOverlay = document.getElementById('popupOverlay');
     const popupSubmit = document.getElementById('popupSubmit');
+
+    // Função abrir popup
+  openPopup.onclick = () => {
+    popup.style.display = "flex";
+    document.body.style.overflow = "hidden"; // Bloqueia scroll
+  };
+
+  // Função fechar popup
+  closePopup.onclick = () => {
+    popup.style.display = "none";
+    document.body.style.overflow = "auto"; // Volta scroll
+  };
+
+  // Impede fechar clicando fora (somente botão X fecha)
+  window.onclick = (e) => {
+    if (e.target === popup) {
+      e.stopPropagation(); // ignora cliques fora
+    }
+  };
 
     // Mostrar pop-up apenas se usuário ainda não estiver definido
     if(!userName || !userLevel){
@@ -151,6 +278,10 @@
       updateCounters();
     }
 
+  if (localStorage.getItem("countVendaOutroMes")) {
+    contador = JSON.parse(localStorage.getItem("countVendaOutroMes"));
+  }
+
     function showMetaPopup(){
       metaPopup.style.display = 'block';
       setTimeout(()=>{ metaPopup.style.display = 'none'; }, 3000);
@@ -168,9 +299,18 @@
       else if (value === 'GOLD') { cell.textContent = ''; cell.classList.add('gold'); }
       else { cell.textContent = ''; }
     }
-
+    function vendas(){
+      countVendaOutroMes++
+      localStorage.setItem("countVendaOutroMes", JSON.stringify(countVendaOutroMes));
+      updateCounters();
+    } 
+    function noshows(){
+      countNoshows++
+      localStorage.setItem("countNoshows", JSON.stringify(countNoshows));
+      updateCounters();
+    }     
     function updateCounters() {
-      let countAgendamento = 0, countNoShow = 0, countVenda = 0,countFeedbacks = 0;
+      let countAgendamento = 0, countNoShow = 0,countFeedbacks = 0,countVenda = 0;
       for (let r = 0; r < rows; r++){
         for (let c = 1; c < cols; c++){
           if(savedState[r][c] !== '') countAgendamento++;
@@ -180,9 +320,10 @@
         }
       }
       document.getElementById('countAgendamento').textContent = countAgendamento;
-      document.getElementById('countNoShow').textContent = countNoShow;
-      document.getElementById('countFeedbacks').textContent = countFeedbacks;
-      document.getElementById('countVenda').textContent = countVenda;
+      document.getElementById('countNoShow').textContent = countNoShow + countNoshows;
+      document.getElementById('countFeedbacks').textContent = countFeedbacks + countVenda;
+      document.getElementById('countVenda').textContent = countVenda + countVendaOutroMes;
+      const Venda = document.getElementById('venda');
 
       const requiredSales = userLevel === 'Pleno' ? 8 : 6;
       if(countVenda === requiredSales && !metaShown){
@@ -203,6 +344,10 @@
       savedState = Array(rows).fill(null).map(()=>Array(cols).fill(''));
       metaShown = false;
       supermetaShown = false;
+      countVendaOutroMes = 0
+      countNoshows = 0
+      localStorage.setItem("countVendaOutroMes", JSON.stringify(countVendaOutroMes));
+      localStorage.setItem("countNoshows", JSON.stringify(countNoshows));
       localStorage.setItem('metaShown', 'false');
       const cells = document.querySelectorAll('.cell');
       cells.forEach((cell, index) => {
@@ -237,11 +382,11 @@
         board.appendChild(cell);
       }
     }
-
     updateCounters();
   </script>
 </body>
 </html>
+ 
 
 
 
