@@ -69,8 +69,8 @@
       color: gold;
     }
 
-  /* Fundo do pop-up */
-  .popup {
+   /* Fundo do pop-up */
+  .popup2 {
     display: none;
     position: fixed;
     top: 0; left: 0;
@@ -81,7 +81,7 @@
     z-index: 9999; /* Garante que fique acima de tudo */
   }
 
-  .popup-content {
+  .popup2-content {
     background: white;
     padding: 20px;
     border-radius: 12px;
@@ -108,22 +108,22 @@
   .button-grid button {
     padding: 10px;
     border: none;
-    background: #0077cc;
+    background: #006777;
     color: white;
     border-radius: 8px;
     cursor: pointer;
   }
 
   .button-grid button:hover {
-    background: #005fa3;
+    background: #000f2b;
   }
-  #closePopup{
+  #closePopup2{
     color: red;
   }
-  #openPopup{
+  #openPopup2{
     padding: 10px;
     border: none;
-    background: #0077cc;
+    background: #008480;
     color: white;
     border-radius: 8px;
     cursor: pointer;
@@ -146,6 +146,17 @@
   </style>
 </head>
 <body>
+
+   <div class="popup-overlay" id="popupOverlay">
+    <div class="popup">
+      <div>Digite seu nome:</div>
+      <input type="text" id="popupName" placeholder="Nome" />
+      <label><input type="radio" name="level" value="Junior" checked /> Junior</label>
+      <label><input type="radio" name="level" value="Pleno" /> Pleno</label>
+      <button id="popupSubmit">Confirmar</button>
+    </div>
+  </div>
+
   <h1>Agendamento dos Tutus</h1>
   <div class="container">
     <div class="user-info">
@@ -161,14 +172,14 @@
     </div>
       <div class="counter-box">Feedbacks<span class="counter-number" id="countFeedbacks">0</span></div>
       <div class="counter-box">Vendas<span class="counter-number" id="countVenda">0</span>
-      <button id="venda" onclick="vendas()"> + Venda</button></div>
-      <button id="openPopup">Utilidades pros SDRs</button>
+       <button id="venda" onclick="vendas()"> + Venda</button></div>
+      <button id="openPopup2">Utilidades pros SDRs</button>
     </div>
   </div>
-<!-- Estrutura do pop-up -->
-<div id="popup" class="popup">
-  <div class="popup-content">
-    <span id="closePopup" class="close">&times;</span>
+  <!-- Estrutura do pop-up -->
+<div id="popup2" class="popup2">
+  <div class="popup2-content">
+    <span id="closePopup2" class="close">&times;</span>
     <h2>Utilidades!</h2>
     <div class="button-grid">
       <button onclick="window.open('https://docs.google.com/spreadsheets/d/1n-9xxPI8seMZ6Fe-KLNcq88-2yiMMZgPDfixczqWxNM/edit?gid=0#gid=0')">Tabela de Migrações</button>
@@ -187,24 +198,16 @@
     <div>Legenda: <span style="color:#facc15">★ = Agendamento</span> | <span style="color:red">X = No-Show</span> | <span style="color:black;background:gold;padding:0 4px">Dourado = Venda</span></div>
     <div class="copyright">Feito por <a href="https://nextfit.getoutline.com/doc/augusto-de-carvalho-fernandes-de-souza-Iy292B8c3p">Augusto de Carvalho</a>, SDR Outbound</div>
   </footer>
-
-  <div class="popup-overlay" id="popupOverlay">
-    <div class="popup">
-      <div>Digite seu nome:</div>
-      <input type="text" id="popupName" placeholder="Nome" />
-      <label><input type="radio" name="level" value="Junior" checked /> Junior</label>
-      <label><input type="radio" name="level" value="Pleno" /> Pleno</label>
-      <button id="popupSubmit">Confirmar</button>
-    </div>
-  </div>
-
   <div class="meta-popup" id="metaPopup">META BATIDAAA<span class="meta-subtext">VAI BATER O SINOO!</span></div>
   <div class="supermeta-popup" id="supermetaPopup">SUPER META BATIDAAAÇAAA<span class="supermeta-subtext">VAI ESPANCAR O SINOOO!!</span></div>
 
- <script>
+<script>
     const openPopup = document.getElementById("openPopup");
+    const openPopup2 = document.getElementById("openPopup2");
     const popup = document.getElementById("popup");
+    const popup2 = document.getElementById("popup2");
     const closePopup = document.getElementById("closePopup");
+    const closePopup2 = document.getElementById("closePopup2");
     const board = document.getElementById('board');
     const userNameDisplay = document.getElementById('userNameDisplay');
     const userSiglaLevelDisplay = document.getElementById('userSiglaLevelDisplay');
@@ -231,22 +234,15 @@
     const popupSubmit = document.getElementById('popupSubmit');
 
     // Função abrir popup
-  openPopup.onclick = () => {
-    popup.style.display = "flex";
+  openPopup2.onclick = () => {
+    popup2.style.display = "flex";
     document.body.style.overflow = "hidden"; // Bloqueia scroll
   };
 
   // Função fechar popup
-  closePopup.onclick = () => {
-    popup.style.display = "none";
+  closePopup2.onclick = () => {
+    popup2.style.display = "none";
     document.body.style.overflow = "auto"; // Volta scroll
-  };
-
-  // Impede fechar clicando fora (somente botão X fecha)
-  window.onclick = (e) => {
-    if (e.target === popup) {
-      e.stopPropagation(); // ignora cliques fora
-    }
   };
 
     // Mostrar pop-up apenas se usuário ainda não estiver definido
@@ -386,7 +382,7 @@
   </script>
 </body>
 </html>
- 
+
 
 
 
